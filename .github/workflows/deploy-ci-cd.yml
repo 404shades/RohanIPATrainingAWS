@@ -22,4 +22,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ github.event.inputs.region}}
       - name: Create Artifactory Bucket if not already
-        run: aws --version
+        run: aws s3 mb s3://artifacts-test-week1 || echo "Bucket already exists"
