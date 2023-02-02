@@ -11,6 +11,14 @@
 - Notification Trigger on S3 Bucket
 
 ## CI/CD Stages
+- Checkout 
+- Configure Credentials using GitHub Secrets
+- Create Artifactory Bucket to store lambda code (Python)
+- Package Cloud formation resources such as lambda code to store it into the bucket created in last step
+- Lint Cloud Formation template to validate errors before deploying
+- Deploy Cloud Formation Stack to AWS
 
+## Lambda Function
+Lambda function written in python which is event source mapped with source bucket in s3. Whenever a new object is created this lambda function will be triggered to copy the new object to the given destination bucket in s3
 
 
