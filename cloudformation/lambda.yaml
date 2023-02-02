@@ -50,10 +50,12 @@ Resources:
                 Action:
                   - 's3:GetBucketNotification'
                   - 's3:PutBucketNotification'
+                  - 's3:GetObject'
                 Resource: !Sub "arn:aws:s3:::${BucketName}"
               - Effect: Allow
                 Action:
                   - 's3:PutObject'
+                  - 's3:PutObjectAcl'
                 Resource: !Sub "arn:aws:s3:::${DestinationBucket}"
               - Effect: Allow
                 Action:
