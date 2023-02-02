@@ -7,6 +7,7 @@ Parameters:
     Default: lambda-config-notification
 
 Resources:
+#  Source Bucket for adding event source notification with lambda
   LambdaBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -15,8 +16,10 @@ Resources:
         LambdaConfigurations:
           - Event: s3:ObjectCreated:*
             Function: !GetAtt EventSourceLambda.Arn
+#  Destination Bucket to copy the created objects from source
   DestinationBucket:
     Type: AWS::S3::Bucket
+#  Lambda Function which will be triggered when a new object is inserted into source bucket
   EventSourceLambda:
     Type: AWS::Lambda::Function
     Properties:
@@ -29,6 +32,7 @@ Resources:
         Variables:
           DESTINATION_BUCKET: !Ref DestinationBucket
       Handler: index.handler
+#  IAM Role to add permissions for copy and event source notification
   EventSourceLambdaIamRole:
     Type: AWS::IAM::Role
     Properties:
@@ -67,6 +71,7 @@ Resources:
                   - 'logs:CreateLogStream'
                   - 'logs:PutLogEvents'
                 Resource: 'arn:aws:logs:*:*:*'
+#  Adding Permission for Lambda to trigger when a new object is created in Source Bucket
   LambdaS3NotificationPermission:
     Type: AWS::Lambda::Permission
     Properties:
