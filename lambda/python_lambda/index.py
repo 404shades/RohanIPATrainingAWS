@@ -1,12 +1,19 @@
 import boto3
 
+import os
+
 
 def get_s3_client():
     return boto3.client('s3')
 
 
+def copy_file_to_destination(copy_object, file_name):
+    return get_s3_client().copy_object(CopySource=copy_object, Bucket=os.environ["DESTINATION_BUCKET"], Key=file_name)
+
+
 def handler(event, context):
     source_bucket_name = event["Records"][0]['s3']['bucket']['name']
-    print(source_bucket_name)
-    print(event)
+    source_object_key = event["Records"][0]['s3']['object']['key']
+    copy_object = {'Bucket': source_bucket_name, 'Key': source_object_key}
+    print(copy_file_to_destination(copy_object, source_object_key))
     return "'Hello Lambda'"
