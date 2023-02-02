@@ -8,7 +8,10 @@ def get_s3_client():
 
 
 def copy_file_to_destination(copy_object, file_name):
-    return get_s3_client().copy_object(CopySource=copy_object, Bucket=os.environ["DESTINATION_BUCKET"], Key=file_name)
+    destination_bucket_name = os.environ["DESTINATION_BUCKET"]
+    print(destination_bucket_name)
+    print(copy_object)
+    return get_s3_client().copy_object(CopySource=copy_object, Bucket=destination_bucket_name, Key=file_name)
 
 
 def handler(event, context):

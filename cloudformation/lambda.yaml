@@ -51,11 +51,13 @@ Resources:
                   - 's3:GetBucketNotification'
                   - 's3:PutBucketNotification'
                   - 's3:GetObject'
+                  - 's3:ListBucket'
                 Resource: !Sub "arn:aws:s3:::${BucketName}"
               - Effect: Allow
                 Action:
                   - 's3:PutObject'
                   - 's3:PutObjectAcl'
+                  - 's3:ListBucket'
                 Resource: !Sub "arn:aws:s3:::${DestinationBucket}"
               - Effect: Allow
                 Action:
