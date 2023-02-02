@@ -6,6 +6,10 @@ on:
         description: 'AWS Region'
         required: true
         default: 'ap-south-1'
+env:
+  ARTIFACT_BUCKET_NAME: artifacts-test-week1
+  CLOUD_FORMATION_STACK_NAME: test9
+
 jobs:
   cfn_deploy:
     name: Deploy CF stack to AWS
@@ -22,10 +26,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ github.event.inputs.region}}
       - name: Create Artifactory Bucket if not already
-        run: aws s3 mb s3://artifacts-test-week1 || echo "Bucket already exists"
+        run: aws s3 mb s3://$ARTIFACT_BUCKET_NAME || echo "Bucket already exists"
       - name: Package Cloud Formation Resources
-        run: aws cloudformation package --template-file cloudformation/lambda.yaml --s3-bucket artifacts-test-week1 --output-template-file outputTemplate.yaml
+        run: aws cloudformation package --template-file cloudformation/lambda.yaml --s3-bucket $ARTIFACT_BUCKET_NAME --output-template-file outputTemplate.yaml
       - name: Deploy Cloud Formation Stack
-        run: |
-          aws cloudformation deploy --template-file outputTemplate.yaml --stack-name test9 --capabilities CAPABILITY_NAMED_IAM
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: $CLOUD_FORMATION_STACK_NAME
+          template: outputTemplate.yaml
+          parameter-overrides: "BucketName=lambda-notification-trigger-test-week1"
+
 
