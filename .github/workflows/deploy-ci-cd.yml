@@ -32,7 +32,7 @@ jobs:
       - name: Deploy Cloud Formation Stack
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
-          name: $CLOUD_FORMATION_STACK_NAME
+          name: ${CLOUD_FORMATION_STACK_NAME}
           template: outputTemplate.yaml
           parameter-overrides: "BucketName=lambda-notification-trigger-test-week1"
 
