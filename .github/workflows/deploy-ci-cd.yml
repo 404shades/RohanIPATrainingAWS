@@ -23,3 +23,9 @@ jobs:
           aws-region: ${{ github.event.inputs.region}}
       - name: Create Artifactory Bucket if not already
         run: aws s3 mb s3://artifacts-test-week1 || echo "Bucket already exists"
+      - name: Package Cloud Formation Resources
+        run: aws cloudformation package --template-file cloudformation/lambda.yaml --s3-bucket artifacts-test-week1 --output-template-file outputTemplate.yaml
+      - name: Deploy Cloud Formation Stack
+        run: |
+          aws cloudformation deploy --template-file outputTemplate.yaml --stack-name test9 --capabilities CAPABILITY_NAMED_IAM
+
