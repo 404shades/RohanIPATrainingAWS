@@ -15,6 +15,8 @@ Resources:
         LambdaConfigurations:
           - Event: s3:ObjectCreated:*
             Function: !GetAtt EventSourceLambda.Arn
+  DestinationBucket:
+    Type: AWS::S3::Bucket
   EventSourceLambda:
     Type: AWS::Lambda::Function
     Properties:
@@ -22,6 +24,9 @@ Resources:
       Runtime: python3.9
       Code: "../lambda/python_lambda"
       Role: !GetAtt EventSourceLambdaIamRole.Arn
+      Environment:
+        Variables:
+          DESTINATION_BUCKET: !Ref DestinationBucket
       Handler: index.handler
   EventSourceLambdaIamRole:
     Type: AWS::IAM::Role
@@ -46,6 +51,10 @@ Resources:
                   - 's3:GetBucketNotification'
                   - 's3:PutBucketNotification'
                 Resource: !Sub "arn:aws:s3:::${BucketName}"
+              - Effect: Allow
+                Action:
+                  - 's3:PutObject'
+                Resource: !Sub "arn:aws:s3:::${DestinationBucket}"
               - Effect: Allow
                 Action:
                   - 'logs:CreateLogGroup'
