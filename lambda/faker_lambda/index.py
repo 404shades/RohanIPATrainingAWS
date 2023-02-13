@@ -1,6 +1,7 @@
 import json
 import os
 from faker import Faker
+from urllib import parse
 import boto3
 import time
 
@@ -27,7 +28,7 @@ def upload_fake_data_to_s3(bucket_name):
     with open(f"/tmp/${file_name}", "w") as file:
         json.dump(fake_data, file)
     get_s3_client().upload_file(f"/tmp/${file_name}", bucket_name, file_name,
-                                ExtraArgs={"Metadata": meta_data, "Tagging": tags})
+                                ExtraArgs={"Metadata": meta_data, "Tagging": parse.urlencode(tags)})
 
 
 def handler(event, context):

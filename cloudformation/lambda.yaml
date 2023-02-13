@@ -94,6 +94,10 @@ Resources:
                 Resource: !Sub "arn:aws:s3:::${DestinationBucket}"
               - Effect: Allow
                 Action:
+                  - 's3:Put*'
+                Resource: !Sub "arn:aws:s3:::${FakeGeneratorBucket}"
+              - Effect: Allow
+                Action:
                   - 'logs:CreateLogGroup'
                   - 'logs:CreateLogStream'
                   - 'logs:PutLogEvents'
