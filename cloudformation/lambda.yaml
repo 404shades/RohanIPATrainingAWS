@@ -19,6 +19,8 @@ Resources:
 #  Destination Bucket to copy the created objects from source
   DestinationBucket:
     Type: AWS::S3::Bucket
+  FakeGeneratorBucket:
+    Type: AWS::S3::Bucket
 #  Lambda Function which will be triggered when a new object is inserted into source bucket
   EventSourceLambda:
     Type: AWS::Lambda::Function
@@ -32,7 +34,32 @@ Resources:
         Variables:
           DESTINATION_BUCKET: !Ref DestinationBucket
       Handler: index.handler
-#  IAM Role to add permissions for copy and event source notification
+#  Adding Lambda Layer to handle dependencies
+  LambdaLayerPython:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - python3.9
+        - python3.8
+      LayerName: PythonLambdaLayer
+      Content: "../lambda_layer/"
+      Description: Lambda layer containing dependencies for lambda functions
+#      Lambda Function to generate fake data
+  FakerLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: FakeDataGeneratorLambda
+      Runtime: python3.9
+      Code: "../lambda/faker_lambda"
+      Role: !GetAtt EventSourceLambdaIamRole.Arn
+      Timeout: 30
+      Layers:
+        - !Ref LambdaLayerPython
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref FakeGeneratorBucket
+      Handler: index.handler
+  #  IAM Role to add permissions for copy and event source notification
   EventSourceLambdaIamRole:
     Type: AWS::IAM::Role
     Properties:

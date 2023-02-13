@@ -27,6 +27,8 @@ jobs:
           aws-region: ${{ github.event.inputs.region}}
       - name: Create Artifactory Bucket if not already
         run: aws s3 mb s3://$ARTIFACT_BUCKET_NAME || echo "Bucket already exists"
+      - name: Install Python Dependencies to create lambda layer
+        run: pip install -r lambda_layer/requirements.txt -t lambda_layer/python
       - name: Package Cloud Formation Resources
         run: aws cloudformation package --template-file cloudformation/lambda.yaml --s3-bucket $ARTIFACT_BUCKET_NAME --output-template-file outputTemplate.yaml
       - name: Setup Cloud Formation Linter to validate template
