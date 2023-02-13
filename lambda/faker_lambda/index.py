@@ -25,7 +25,7 @@ def upload_fake_data_to_s3(bucket_name):
     file_name = str(int(time.time())) + ".json"
     tags = {"name": file_name.replace(".json", ""), "user_name": fake_data["userName"]}
     meta_data = {"key1": "value1", "key2": "value2"}
-    with open(f"/tmp/${file_name}", "w") as file:
+    with open(f"/tmp/{file_name}", "w") as file:
         json.dump(fake_data, file)
     get_s3_client().upload_file(f"/tmp/{file_name}", bucket_name, file_name,
                                 ExtraArgs={"Metadata": meta_data, "Tagging": parse.urlencode(tags)})
