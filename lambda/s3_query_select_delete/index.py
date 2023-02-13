@@ -60,6 +60,7 @@ def handler(event, context):
     delete_keys_meta = find_objects_by_metadata(bucket_name=os.environ["BUCKET_NAME"], key_name="email",
                                                 value_pattern=".*\.org")
     # delete the objects found above
+
     delete_objects_from_bucket(bucket_name=os.environ["BUCKET_NAME"], object_keys=delete_keys_meta)
     delete_objects_from_bucket(bucket_name=os.environ["BUCKET_NAME"], object_keys=delete_keys_tags)
     return "Success"

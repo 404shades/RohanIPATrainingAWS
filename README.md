@@ -22,3 +22,15 @@
 Lambda function written in python which is event source mapped with source bucket in s3. Whenever a new object is created this lambda function will be triggered to copy the new object to the given destination bucket in s3
 
 
+# Week 2
+- Create Lambda function to delete objects from s3 bucket based upon its meta data and tags
+
+## Resources Created
+- Lambda Function (Faker to generate fake data and store it as files with tags and meta data attached to s3 bucket)
+- Lambda Function (S3QuerySelectorAndDestroyer to delete objects based on regex pattern of their tags/meta data values)
+- Lambda layer to store common python dependencies
+
+## CI/CD Stages
+- Added a new stage to package python dependencies using pip install
+
+
