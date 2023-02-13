@@ -94,8 +94,8 @@ Resources:
                 Resource: !Sub "arn:aws:s3:::${DestinationBucket}"
               - Effect: Allow
                 Action:
-                  - s3:*
-                Resource: *
+                  - 's3:*'
+                Resource: '*'
               - Effect: Allow
                 Action:
                   - 'logs:CreateLogGroup'
