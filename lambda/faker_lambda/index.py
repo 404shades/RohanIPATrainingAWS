@@ -48,5 +48,5 @@ def handler(event, context):
     :return:
     """
     bucket_name = os.environ["BUCKET_NAME"]
-    for i in range(0, 100):
+    for i in range(0, 2000):
         upload_fake_data_to_s3(bucket_name)
